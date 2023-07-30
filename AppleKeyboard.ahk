@@ -32,6 +32,13 @@
 SetTitleMatchMode 2
 SendMode Event
 
+; Focus address bar in edge/chrome hack.
+; Windows sees the shortcut before ahk, and invokes the lock screen. To circumvent this, 
+; we disable win + l key locking (This line must come before any hotkey assignments in the .ahk file)
+RegWrite, REG_DWORD, HKEY_CURRENT_USER, Software\Microsoft\Windows\CurrentVersion\Policies\System, DisableLockWorkstation, 1
+; and Win+L is mapped to Ctrl+L.
+<#l::SendEvent ^{l}
+
 ; F3 (Mission Control) (Windows 10 only) Task View
 F3::SendEvent #{Tab}
 ; -------------------------------------------------------------------------------------------
@@ -53,9 +60,10 @@ F11::Volume_Down
 ; F12 (Volume Up) increase system volume
 F12::Volume_Up
 
-; swaps left side cmd (super/win) and ctrl key
-LWin::LCtrl
-LCtrl::LWin
+; swaps left side cmd (super/win) and ctrl keys.
+; BREAKS WHEN FOCUS ADDRESS HACK IS APPLIED, WHY?
+; LWin::LCtrl
+; LCtrl::LWin
 
 ; swaps right side cmd (super/win) with RCtrl key
 RWin::RCtrl
